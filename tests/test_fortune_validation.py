@@ -5,6 +5,7 @@ client = TestClient(app)
 
 
 def test_missing_required_fields():
+    #
     # gender는 있으나 birth가 빠진 요청
     response = client.post("/api/v1/fortune", json={"gender": "남성"})
 
