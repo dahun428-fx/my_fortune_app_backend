@@ -1,0 +1,7 @@
+"""사용자 이름: {name}
+성별: {gender}
+생년월일: {birth}
+출생 시각: {birth_time}
+양력/음력: {calendar_type}
+주제: {topic}
+위 정보를 기반으로 {topic}에 대한 운세를 알려줘."""

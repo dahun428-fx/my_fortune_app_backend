@@ -1,0 +1,7 @@
+"""Name: {name}
+Gender: {gender}
+Birthdate: {birth}
+Birth Time: {birth_time}
+Calendar: {calendar_type}
+Topic: {topic}
+Based on the above information, please provide a fortune reading about {topic}."""
