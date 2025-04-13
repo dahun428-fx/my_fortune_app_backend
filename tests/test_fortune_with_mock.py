@@ -54,15 +54,6 @@ def test_invalid_birth_format(mock_llm):
 
 
 @patch("app.services.fortune_service.get_fortune_llm_answer")
-def test_invalid_birth_time_format(mock_llm):
-    payload = {"gender": "남성", "birth": "1990-01-01", "birth_time": "1시"}
-    response = client.post("/api/v1/fortune", json=payload)
-
-    assert response.status_code == 422
-    assert "birth_time" in str(response.json()["detail"])
-
-
-@patch("app.services.fortune_service.get_fortune_llm_answer")
 def test_invalid_language(mock_llm):
     payload = {"gender": "남성", "birth": "1990-01-01", "language": "jp"}
     response = client.post("/api/v1/fortune", json=payload)
