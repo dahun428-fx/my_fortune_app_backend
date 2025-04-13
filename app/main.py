@@ -63,3 +63,6 @@ async def http_exception_handler(request: Request, exc: StarletteHTTPException):
             "message": exc.detail,
         },
     )
+
+
+print(f"[INFO] 현재 실행 환경: {os.getenv('ENV')}")
