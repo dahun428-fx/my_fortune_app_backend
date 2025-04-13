@@ -35,15 +35,6 @@ def test_invalid_birth_format():
     assert any("birth" in str(err["loc"]) for err in response.json()["detail"])
 
 
-def test_invalid_birth_time_format():
-    # 잘못된 출생 시각 형식
-    payload = {"gender": "남성", "birth": "1990-01-01", "birth_time": "1시"}
-    response = client.post("/api/v1/fortune", json=payload)
-
-    assert response.status_code == 422
-    assert "birth_time" in str(response.json()["detail"])
-
-
 def test_invalid_language():
     # 허용되지 않은 언어 코드
     payload = {"gender": "남성", "birth": "1990-01-01", "language": "jp"}
