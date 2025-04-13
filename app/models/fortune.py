@@ -1,4 +1,5 @@
 from pydantic import BaseModel, Field, field_validator
+from datetime import datetime
 from enum import Enum
 import re
 
@@ -22,6 +23,17 @@ class FortuneRequest(BaseModel):
     def validate_birth_format(cls, v):
         if not re.match(r"^\d{4}-\d{2}-\d{2}$", v):
             raise ValueError("birth must be in YYYY-MM-DD format")
+        return v
+
+    @field_validator("birth_time")
+    @classmethod
+    def validate_birth_time(cls, v):
+        if not v:
+            return v  # allow None or ""
+        try:
+            datetime.strptime(v, "%H:%M")
+        except ValueError:
+            raise ValueError("birth_time must be in HH:MM format")
         return v
 
     @field_validator("gender")
