@@ -1,5 +1,3 @@
-# .github/workflows/python-ci.yml
-
 name: Python CI
 
 on:
@@ -11,6 +9,10 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+
+    env:
+      ENV: development
+      DEBUG: "True"
 
     steps:
       - name: Checkout repository
@@ -27,6 +29,15 @@ jobs:
           pip install -r requirements.txt
           pip install pytest
 
+      - name: Create .env.development file
+        run: |
+          echo "ENV=development" >> .env.development
+          echo "DEBUG=True" >> .env.development
+          echo "LOG_LEVEL=DEBUG" >> .env.development
+          echo "GROQ_API_KEY=dummy_key_for_ci" >> .env.development
+          echo "GROQ_MODEL_NAME=llama-3-70b" >> .env.development
+          echo "LLM_PROVIDER=groq" >> .env.development
+
       - name: Run tests
         run: |
-          pytest
+          pytest -s
