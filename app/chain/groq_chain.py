@@ -14,5 +14,5 @@ def get_fortune_llm_answer(prompt: str) -> str:
     )
     messages = [HumanMessage(content=prompt)]
     response = llm.invoke(messages)
-    logger.info("[DEBUG] LLM 응답: %s", response.content)
+    logger.debug("[DEBUG] LLM 응답: %s", response.content)
     return response.content

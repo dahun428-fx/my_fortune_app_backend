@@ -24,13 +24,6 @@ class FortuneRequest(BaseModel):
             raise ValueError("birth must be in YYYY-MM-DD format")
         return v
 
-    @field_validator("birth_time")
-    @classmethod
-    def validate_birth_time_format(cls, v):
-        if v is not None and not re.match(r"^\d{2}:\d{2}$", v):
-            raise ValueError("birth_time must be in HH:MM format")
-        return v
-
     @field_validator("gender")
     @classmethod
     def validate_gender(cls, v):
