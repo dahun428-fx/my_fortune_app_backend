@@ -1,23 +1,41 @@
+# app/main.py
+
+import os
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-from app.api.v1 import fortune
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
-# app/main.py
-from app.core.logging_config import setup_logger
+from app.api.v1 import fortune
+from app.logging_config import setup_logging
 
-setup_logger()
+# 환경 감지 (default: development)
+ENV_MODE = os.getenv("ENV", "development")
+FRONTEND_ORIGIN = os.getenv("FRONTEND_ORIGIN", "http://localhost:3000")
+
+# 로깅 설정
+setup_logging()
 
 app = FastAPI()
 
+# 🌐 CORS 설정
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[FRONTEND_ORIGIN],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# API 라우터 등록
 app.include_router(fortune.router, prefix="/api/v1")
 
 
+# 🧩 유효성 검사 오류 응답
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
     def clean_errors(errors):
-        # ValueError 객체를 문자열로 변환
         for err in errors:
             if "ctx" in err and isinstance(err["ctx"].get("error"), Exception):
                 err["ctx"]["error"] = str(err["ctx"]["error"])
@@ -34,6 +52,7 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
     )
 
 
+# 🧩 HTTP 예외 처리
 @app.exception_handler(StarletteHTTPException)
 async def http_exception_handler(request: Request, exc: StarletteHTTPException):
     return JSONResponse(
