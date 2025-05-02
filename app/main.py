@@ -13,6 +13,7 @@ from app.logging_config import setup_logging
 # 환경 감지 (default: development)
 ENV_MODE = os.getenv("ENV", "development")
 FRONTEND_ORIGIN = os.getenv("FRONTEND_ORIGIN", "http://localhost:3000")
+allowed_origins = [origin.strip() for origin in FRONTEND_ORIGIN.split(",")]
 
 # 로깅 설정
 setup_logging()
@@ -22,7 +23,7 @@ app = FastAPI()
 # 🌐 CORS 설정
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[FRONTEND_ORIGIN],
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
