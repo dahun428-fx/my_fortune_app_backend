@@ -3,8 +3,30 @@ from app.chain.groq_chain import get_fortune_llm_answer
 from app.models.fortune import FortuneRequest, FortuneResponse
 from app.prompts.fortune_templates import get_fortune_prompt
 from app.utils.clean import clean_fortune_result  # 후처리 함수
+from datetime import datetime
 
 logger = logging.getLogger(__name__)
+
+
+def get_today_string(language: str = "ko") -> str:
+    """
+    현재 날짜를 언어에 맞는 형식으로 문자열로 반환합니다.
+
+    Args:
+        language (str): 언어 코드 ("ko" 또는 "en")
+
+    Returns:
+        str: 포맷팅된 날짜 문자열
+    """
+    now = datetime.now()
+
+    if language == "ko":
+        return now.strftime("%Y년 %m월 %d일")
+    elif language == "en":
+        return now.strftime("%B %d, %Y")  # 예: "May 2, 2025"
+    else:
+        # 기본은 영어 형식으로 처리
+        return now.strftime("%Y-%m-%d")
 
 
 def map_calendar_type(calendar_type: str, language: str) -> str:
@@ -47,6 +69,7 @@ async def get_fortune(req: FortuneRequest) -> FortuneResponse:
     # 템플릿 적용
     prompt_template = get_fortune_prompt(language=req.language)
     prompt = prompt_template.format(
+        today_str=get_today_string(req.language),
         name=req.name or "",
         gender=gender,
         birth=req.birth,

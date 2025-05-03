@@ -22,3 +22,6 @@ GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
 
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 GEMINI_MODEL_NAME = os.getenv("GEMINI_MODEL_NAME", "gemini-pro")
+
+CLOVA_API_KEY = os.getenv("CLOVA_API_KEY")
+CLOVA_MODEL_NAME = os.getenv("CLOVA_MODEL_NAME")
